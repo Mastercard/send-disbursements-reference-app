@@ -1,0 +1,1956 @@
+swagger: "2.0"
+info:
+   version: V1
+   title: Send Disbursements
+   x-artifactId: disbursements
+host: api.mastercard.com
+tags:
+   -
+      name: Disbursement
+schemes:
+   - https
+paths:
+   /send/static/v1/partners/{partnerId}/disbursements/payment:
+      post:
+         tags:
+            - Disbursement
+         description: "This service allows disbursers to push payments to the registered consumer\u2019\
+            s account. This service also supports idempotency property."
+         summary: "This service allows disbursers to push payments to the registered consumer\u2019s \
+            account. This service also supports idempotency property."
+         operationId: sendDisbursement
+         consumes:
+            - application/json
+         produces:
+            - application/json
+         parameters:
+            -
+               in: path
+               name: partnerId
+               description: Path Param - Provider assigned partner id. Details - string, 32
+               required: true
+               type: string
+            -
+               in: body
+               name: payment_disbursement
+               description: Contains the details of the request message.
+               required: false
+               schema:
+                  $ref: '#/definitions/PaymentDisbursement_wrapper'
+         responses:
+            200:
+               description: Response details
+               schema:
+                  $ref: '#/definitions/Disbursement_wrapper'
+         x-testable: false
+         x-samples:
+            -
+               name: SendDisbursementWithNonTokenizedTransaction
+               ordering: 541
+               ignoreAsserts:
+                  - disbursement.id
+                  - disbursement.created
+                  - disbursement.transaction_history.data.transaction[0].id
+                  - disbursement.transaction_history.data.transaction[0].create_timestamp
+                  - disbursement.transaction_history.data.transaction[0].status_timestamp
+                  - disbursement.status_timestamp
+                  - disbursement.transaction_history.data.transaction[0].retrieval_reference
+                  - disbursement.transaction_history.data.transaction[0].system_trace_audit_number
+                  - disbursement.recipient.first_name
+                  - disbursement.recipient.middle_name
+                  - disbursement.recipient.last_name
+                  - disbursement.recipient.nationality
+                  - disbursement.recipient.date_of_birth
+                  - disbursement.recipient.address
+                  - disbursement.recipient.address.line1
+                  - disbursement.recipient.address.line2
+                  - disbursement.recipient.address.city
+                  - disbursement.recipient.address.country_subdivision
+                  - disbursement.recipient.address.postal_code
+                  - disbursement.recipient.address.country
+                  - disbursement.recipient.phone
+                  - disbursement.recipient.email
+                  - disbursement.sender.first_name
+                  - disbursement.sender.middle_name
+                  - disbursement.sender.last_name
+                  - disbursement.sender.address
+                  - disbursement.sender.address.line1
+                  - disbursement.sender.address.line2
+                  - disbursement.sender.address.city
+                  - disbursement.sender.address.country_subdivision
+                  - disbursement.sender.address.postal_code
+                  - disbursement.sender.address.country
+                  - disbursement.sender.government_ids
+                  - disbursement.funding_source
+                  - disbursement.statement_descriptor
+                  - disbursement.recipient.government_ids
+                  - disbursement.recipient.government_ids.government_id_uri[0]
+                  - disbursement.payment_origination_country
+                  - disbursement.original_status
+                  - disbursement.transaction_history.data.transaction[0].network
+                  - disbursement.transaction_history.data.transaction[0].funds_availability
+                  - disbursement.transaction_history.data.transaction[0].status
+                  - disbursement.transaction_history.data.transaction[0].status_reason
+                  - disbursement.status
+               overrides:
+                  -
+                     payment_disbursement.statement_descriptor: val:THANK YOU
+               request:
+                  application/json: |
+                     {
+                        "partnerId":"ptnr_BEeCrYJHh2BXTXPy_PEtp-8DBOo",
+                        "payment_disbursement":{
+                           "disbursement_reference":Disb_302638978466399000",
+                           "amount":"1008",
+                           "currency":"USD",
+                           "payment_type":"BDB",
+                            "sender_account_uri": "raw:12345678901234567890",
+                             "sender": {
+                               "first_name": "XYZ",
+                               "middle_name": "",
+                               "last_name": "DBA MA",
+                               "address": {
+                                 "line1": "123 Corporate Drive",
+                                 "line2": "Suite 100",
+                                 "city": "Chicago",
+                                 "country_subdivision": "IL",
+                                 "postal_code": "60618",
+                                 "country": "USA"
+                               },
+                               "government_ids": {
+                                 "government_id_uri": ["tin:12345678]
+                               }
+                             },
+                                "funding_source": "DEPOSIT_ACCOUNT",
+                           "recipient_account_uri":"pan:5013040000000018;exp=2077-05",
+                           "recipient":{
+                              "first_name":"Jane",
+                              "middle_name":"Tyler",
+                              "last_name":"Smith",
+                              "nationality":"USA",
+                              "date_of_birth":"1999-12-30",
+                              "address":{
+                                 "line1":"1 Main St",
+                                 "line2":"Apartment 9",
+                                 "city":"OFallon",
+                                 "country_subdivision":"MO",
+                                 "postal_code":"63368",
+                                 "country":"USA"
+                              },
+                              "phone":"11234567890",
+                              "email":"Jane.Smith123@abcmail.com",
+                              "government_ids":
+                                 {
+                                    "government_id_uri":["ppn:123456789;expiration-date=2077-05-27;issue-date=2011-07-12;issuing-country=USA;issuing-place=OFallon"]
+                                 }
+                           },
+                           "payment_origination_country":"USA",
+                           "sanction_screening_override":"true",
+                           "reconciliation_data":{
+                              "custom_field":[
+                                 {
+                                    "name":"Claim Number",
+                                    "value":"123"
+                                 },
+                                 {
+                                    "name":"Agent",
+                                    "value":"456"
+                                 },
+                                 {
+                                    "name":"Policy",
+                                    "value":"789"
+                                 }
+                              ]
+                           },
+                           "statement_descriptor":"THANK YOU",
+                           "participant":{
+                              "merchant_category_code":"4121",
+                              "card_acceptor_id":"CardAcceptor123",
+                              "customer_service_contact_info":"18005559999"
+                           },
+                           "statement_descriptor":"THANK YOU"
+                        }
+                     }
+               response:
+                  application/json: |
+                     {
+                        "disbursement":{
+                           "id":"dsb_b7bV5cYZIOrewrPg70JShED7ZILk",
+                           "resource_type":"disbursement",
+                           "payment_type":"BDB",
+                           "disbursement_reference":"Disb_302638978466399000",
+                           "sender_account_uri": "raw:12345678901234567890",
+                            "sender": {
+                              "first_name": "XYZ",
+                              "middle_name": "",
+                              "last_name": "DBA MA",
+                              "address": {
+                                "line1": "123 Corporate Drive",
+                                "line2": "Suite 100",
+                                "city": "Chicago",
+                                "country_subdivision": "IL",
+                                "postal_code": "60618",
+                                "country": "USA"
+                              },
+                              "government_ids": {
+                                "government_id_uri": ["tin:12345678]
+                              }
+                            },
+                               "funding_source": "DEPOSIT_ACCOUNT",
+                           "recipient_account_uri":"pan:************0018",
+                           "recipient":{
+                              "first_name":"Jane",
+                              "middle_name":"Tyler",
+                              "last_name":"Smith",
+                              "nationality":"USA",
+                              "date_of_birth":"1999-12-30",
+                              "address":{
+                                 "line1":"1 Main St",
+                                 "line2":"Apartment 9",
+                                 "city":"OFallon",
+                                 "country_subdivision":"MO",
+                                 "postal_code":"63368",
+                                 "country":"USA"
+                              },
+                              "phone":"11234567890",
+                              "email":"Jane.Smith123@abcmail.com",
+                              "government_ids":
+                                 {
+                                    "government_id_uri":["ppn:*****6789;expiration-date=2077-05-27;issue-date=2011-07-12;issuing-country=USA;issuing-place=OFallon"]
+                                 },
+                           },
+                           "payment_origination_country":"USA",
+                           "disbursement_amount":{
+                              "value":"1008",
+                              "currency":"USD"
+                           },
+                           "created":"2019-08-29T09:17:51-05:00",
+                           "transaction_history":{
+                              "resource_type":"list",
+                              "item_count":"1",
+                              "data":{
+                                 "transaction":[
+                                    {
+                                       "id":"txn_fsD7SodGiWKciB0pRjVDoVhzl4sx",
+                                       "resource_type":"transaction",
+                                       "account_uri":"pan:************0018",
+                                       "transaction_amount":{
+                                          "value":"1008",
+                                          "currency":"USD"
+                                       },
+                                       "network":"STAR",
+                                       "funds_availability":"IMMEDIATE",
+                                       "type":"PAYMENT",
+                                       "create_timestamp":"2019-08-29T09:17:51-05:00",
+                                       "status":"APPROVED",
+                                       "status_reason":"APPROVED",
+                                       "status_timestamp":"2019-08-29T09:17:51-05:00",
+                                       "retrieval_reference":"624200192616",
+                                       "system_trace_audit_number":"926162"
+                                    }
+                        ]
+                              }
+                           },
+                           "reconciliation_data":{
+                              "custom_field":[
+                                 {
+                                    "name":"Claim Number",
+                                    "value":"123"
+                                 },
+                                 {
+                                    "name":"Agent",
+                                    "value":"456"
+                                 },
+                                 {
+                                    "name":"Policy",
+                                    "value":"789"
+                                 }
+                              ]
+                           },
+                           "statement_descriptor":"CLAIM 12345",
+                           "participant":{
+                              "merchant_category_code":"4121",
+                              "card_acceptor_id":"CardAcceptor123",
+                              "customer_service_contact_info":"18005559999"
+                           },
+                           "original_status":"APPROVED",
+                           "status":"APPROVED",
+                           "status_timestamp":"2019-08-29T09:17:51-05:00"
+                        }
+                     }
+            -
+               name: SendDisbursementFasterPaymentsService
+               ordering: 543
+               ignoreAsserts:
+                  - disbursement.id
+                  - disbursement.created
+                  - disbursement.transaction_history.data.transaction[0].id
+                  - disbursement.transaction_history.data.transaction[0].create_timestamp
+                  - disbursement.transaction_history.data.transaction[0].status_timestamp
+                  - disbursement.status_timestamp
+                  - disbursement.transaction_history.data.transaction[0].retrieval_reference
+                  - disbursement.transaction_history.data.transaction[0].system_trace_audit_number
+                  - disbursement.recipient.first_name
+                  - disbursement.recipient.middle_name
+                  - disbursement.recipient.last_name
+                  - disbursement.recipient.nationality
+                  - disbursement.recipient.date_of_birth
+                  - disbursement.recipient.address
+                  - disbursement.recipient.address.line1
+                  - disbursement.recipient.address.line2
+                  - disbursement.recipient.address.city
+                  - disbursement.recipient.address.country_subdivision
+                  - disbursement.recipient.address.postal_code
+                  - disbursement.recipient.address.country
+                  - disbursement.recipient.phone
+                  - disbursement.recipient.email
+                  - disbursement.statement_descriptor
+                  - disbursement.recipient.government_ids.government_id_uri[0]
+                  - disbursement.sender.first_name
+                  - disbursement.sender.middle_name
+                  - disbursement.sender.last_name
+                  - disbursement.sender.address
+                  - disbursement.sender.address.line1
+                  - disbursement.sender.address.line2
+                  - disbursement.sender.address.city
+                  - disbursement.sender.address.country_subdivision
+                  - disbursement.sender.address.postal_code
+                  - disbursement.sender.address.country
+                  - disbursement.sender.government_ids
+                  - disbursement.funding_source
+                  - disbursement.payment_origination_country
+                  - disbursement.original_status
+                  - disbursement.transaction_history.data.transaction.network
+                  - disbursement.transaction_history.data.transaction.funds_availability
+                  - disbursement.funding_account_uri
+                  - disbursement.faster_payments_id
+                  - disbursement.payment_uid
+                  - disbursement.participant.merchant_category_code
+                  - disbursement.participant.card_acceptor_id
+                  - disbursement.participant.customer_service_contact_info
+               overrides:
+                  -
+                     payment_disbursement.statement_descriptor: val:TEST
+               request:
+                  application/json: |
+                     {
+                       "partnerId":"ptnr_5oYn4lC5_q4C4R-m42i9DYtE7Ci",
+                       "payment_disbursement": {
+                         "disbursement_reference": "dsb3_@remember-integer[35]@",
+                         "payment_origination_country": "GBR",
+                         "payment_type": "BDB",
+                         "amount": "996",
+                         "currency": "GBP",
+                         "recipient": {
+                           "government_ids": {
+                             "government_id_uri": [
+                               "ssn:123456789;expiration-date=2077-05-27;issue-date=2011-07-12;issuing-country=USA;issuing-place=St Charles"
+                             ]
+                           },
+                           "first_name": "Jane",
+                           "middle_name": "Tyler",
+                           "last_name": "Smith",
+                           "nationality": "USA",
+                           "date_of_birth": "1999-12-30",
+                           "address": {
+                             "line1": "1 Main St",
+                             "line2": "Apartment 9",
+                             "city": "OFallon",
+                             "country_subdivision": "MO",
+                             "postal_code": "63368",
+                             "country": "USA"
+                           },
+                           "phone": "11234567890",
+                           "email": "Jane.Smith123@abcmail.com",
+                           "name_on_account": "Mr Recipient"
+                         },
+                         "recipient_account_uri": "iban:GB25BARC20300200004588",
+                         "transfer_priority": "FDP",
+                         "sanction_screening_override": "true",
+                         "reconciliation_data": {
+                           "custom_field": [
+                             {
+                               "name": "Claim Number",
+                               "value": "123"
+                             },
+                             {
+                               "name": "Agent",
+                               "value": "456"
+                             },
+                             {
+                               "name": "Policy",
+                               "value": "789"
+                             }
+                           ]
+                         },
+                         "statement_descriptor": "TEST"
+                       }
+                     }
+               response:
+                  application/json: |
+                     {
+                        "disbursement":{
+                           "id":"dsb_b7bV5cYZIOrewrPg70JShED7ZILk",
+                           "resource_type":"disbursement",
+                           "payment_type":"BDB",
+                           "disbursement_reference":"dsb3_@remember-integer[35]@",
+                           "recipient_account_uri":"iban:GB25BARC20300200004588",
+                           "transfer_priority":"FDP",
+                           "faster_payments_id":"YE78126Q54WK2J06M33020170720826608371",
+                           "payment_uid":"32e2f3f9-dee4-4d10-a470-3dfa01dbf118",
+                     "sender_account_uri": "raw:12345678901234567890",
+                       "sender": {
+                         "first_name": "XYZ",
+                         "middle_name": "",
+                         "last_name": "DBA MA",
+                         "address": {
+                           "line1": "123 Corporate Drive",
+                           "line2": "Suite 100",
+                           "city": "Chicago",
+                           "country_subdivision": "IL",
+                           "postal_code": "60618",
+                           "country": "USA"
+                         },
+                         "government_ids": {
+                           "government_id_uri": ["tin:12345678]
+                         }
+                       },
+                          "funding_source": "DEPOSIT_ACCOUNT",
+                                 "recipient":{
+                              "first_name":"Jane",
+                              "middle_name":"Tyler",
+                              "last_name":"Smith",
+                              "nationality":"USA",
+                              "date_of_birth":"1999-12-30",
+                              "address":{
+                                 "line1":"1 Main St",
+                                 "line2":"Apartment 9",
+                                 "city":"OFallon",
+                                 "country_subdivision":"MO",
+                                 "postal_code":"63368",
+                                 "country":"USA"
+                              },
+                              "phone":"11234567890",
+                              "email":"Jane.Smith123@abcmail.com",
+                           },
+                           "payment_origination_country":"GBR",
+                           "disbursement_amount":{
+                              "value":"996",
+                              "currency":"GBP"
+                           },
+                           "created":"2019-08-29T09:17:51-05:00",
+                           "transaction_history":{
+                              "resource_type":"list",
+                              "item_count":"1",
+                              "data":{
+                                 "transaction":[
+                                    {
+                                       "id":"txn_fsD7SodGiWKciB0pRjVDoVhzl4sx",
+                                       "resource_type":"transaction",
+                                       "account_uri":"iban:GB25BARC20300200004588",
+                                       "transaction_amount":{
+                                          "value":"996",
+                                          "currency":"GBP"
+                                       },
+                                       "network":"FPS_OUTBOUND",
+                                       "funds_availability":"IMMEDIATE",
+                                       "type":"PAYMENT",
+                                       "create_timestamp":"2019-08-29T09:17:51-05:00",
+                                       "status":"APPROVED",
+                                       "status_reason":"APPROVED",
+                                       "status_timestamp":"2019-08-29T09:17:51-05:00",
+                                       "retrieval_reference":"624200192616",
+                                       "system_trace_audit_number":"926162"
+                                    }
+                                 ]
+                              }
+                           },
+                           "reconciliation_data":{
+                              "custom_field":[
+                                 {
+                                    "name":"Claim Number",
+                                    "value":"123"
+                                 },
+                                 {
+                                    "name":"Agent",
+                                    "value":"456"
+                                 },
+                                 {
+                                    "name":"Policy",
+                                    "value":"789"
+                                 }
+                              ]
+                           },
+                           "statement_descriptor":"CLAIM 12345",
+                           "participant":{
+                              "merchant_category_code":"4121",
+                              "card_acceptor_id":"CardAcceptor123",
+                              "customer_service_contact_info":"18005559999"
+                           },
+                           "original_status":"APPROVED",
+                           "status":"APPROVED",
+                           "status_timestamp":"2019-08-29T09:17:51-05:00"
+                        }
+                     }
+            -
+               name: SendDisbursementWithTokenizedTransaction
+               ordering: 542
+               ignoreAsserts:
+                  - disbursement.id
+                  - disbursement.created
+                  - disbursement.transaction_history.data.transaction[0].id
+                  - disbursement.transaction_history.data.transaction[0].create_timestamp
+                  - disbursement.transaction_history.data.transaction[0].status_timestamp
+                  - disbursement.status_timestamp
+                  - disbursement.disbursement_reference
+                  - disbursement.transaction_history.data.transaction[0].retrieval_reference
+                  - disbursement.transaction_history.data.transaction[0].system_trace_audit_number
+                  - disbursement.recipient.first_name
+                  - disbursement.recipient.middle_name
+                  - disbursement.recipient.last_name
+                  - disbursement.recipient.nationality
+                  - disbursement.recipient.date_of_birth
+                  - disbursement.recipient.address
+                  - disbursement.recipient.address.line1
+                  - disbursement.recipient.address.line2
+                  - disbursement.recipient.address.city
+                  - disbursement.recipient.address.country_subdivision
+                  - disbursement.recipient.address.postal_code
+                  - disbursement.recipient.address.country
+                  - disbursement.recipient.phone
+                  - disbursement.recipient.email
+                  - disbursement.sender.first_name
+                  - disbursement.sender.middle_name
+                  - disbursement.sender.last_name
+                  - disbursement.sender.address
+                  - disbursement.sender.address.line1
+                  - disbursement.sender.address.line2
+                  - disbursement.sender.address.city
+                  - disbursement.sender.address.country_subdivision
+                  - disbursement.sender.address.postal_code
+                  - disbursement.sender.address.country
+                  - disbursement.sender.government_ids
+                  - disbursement.funding_source
+                  - disbursement.recipient_account_uri
+                  - disbursement.statement_descriptor
+                  - disbursement.recipient.government_ids.government_id_uri[0]
+                  - disbursement.payment_origination_country
+                  - disbursement.original_status
+                  - disbursement.transaction_history.data.transaction[]
+                  - disbursement.transaction_history.data.transaction[0].status
+                  - disbursement.transaction_history.data.transaction[0].status_reason
+                  - disbursement.status
+                  - disbursement.transaction_history.data.transaction[0].network
+                  - disbursement.transaction_history.data.transaction[0].funds_availability
+               overrides:
+                  -
+                     payment_disbursement.statement_descriptor: val:THANK YOU
+               request:
+                  application/json: |
+                     {
+                       "partnerId": "ptnr_BEeCrYJHh2BXTXPy_PEtp-8DBOo",
+                       "payment_disbursement": {
+                         "disbursement_reference": "dsb_2@remember-integer[35]@",
+                         "payment_origination_country": "USA",
+                         "amount": "1008",
+                         "currency": "USD",
+                         "payment_type": "BDB",
+                           "recipient_account_uri": "id:acct_OwbWAY9vZFPcksuctOqHssObjfX",
+                           "reconciliation_data":{
+                              "custom_field":[
+                                 {
+                                    "name":"Claim Number",
+                                    "value":"123"
+                                 },
+                                 {
+                                    "name":"Agent",
+                                    "value":"456"
+                                 },
+                                 {
+                                    "name":"Policy",
+                                    "value":"789"
+                                 }
+                              ]
+                           },
+                         "statement_descriptor": "CLAIM 12345",
+                           "participant":{
+                              "merchant_category_code":"4121",
+                              "card_acceptor_id":"CardAcceptor123",
+                              "customer_service_contact_info":"18005559999"
+                           }
+                       }
+                     }
+               response:
+                  application/json: |
+                     {
+                       "disbursement": {
+                         "id": "dsb_mwMk_w73pJUWUFypUA8JVF0bZHPE",
+                         "resource_type": "disbursement",
+                         "payment_type": "BDB",
+                         "disbursement_reference": "dsb_2@remember-integer[35]@",
+                        "recipient_account_uri": "id:acct_7ml5eNOF_u5WK3CTK2Ykke-leAd",
+                     "sender_account_uri": "raw:12345678901234567890",
+                         "sender": {
+                           "first_name": "XYZ",
+                           "middle_name": "",
+                           "last_name": "DBA MA",
+                           "address": {
+                             "line1": "123 Corporate Drive",
+                             "line2": "Suite 100",
+                             "city": "Chicago",
+                             "country_subdivision": "IL",
+                             "postal_code": "60618",
+                             "country": "USA"
+                           },
+                           "government_ids": {
+                             "government_id_uri": ["tin:12345678]
+                           }
+                         },
+                            "funding_source": "DEPOSIT_ACCOUNT",
+                               "recipient": {
+                           "first_name": "John",
+                           "middle_name": "Tyler",
+                           "last_name": "Smith",
+                           "nationality": "USA",
+                           "date_of_birth": "1999-12-30",
+                           "address": {
+                             "line1": "1 Main St",
+                             "line2": "Apartment 9",
+                             "city": "OFallon",
+                             "country_subdivision": "MO",
+                             "postal_code": "63368",
+                             "country": "USA"
+                           },
+                           "phone": "11234567890",
+                           "email": "Jane.Smith123@abcmail.com",
+                           "government_ids": { "government_id_uri": ["ppn:*****6789;expiration-date=2077-05-27;issue-date=2011-07-12;issuing-country=USA;issuing-place=OFallon" ]},
+                         },
+                         "payment_origination_country": "USA",
+                         "disbursement_amount": {
+                           "value": "1008",
+                           "currency": "USD"
+                         },
+                         "created": "2019-08-29T09:20:30-05:00",
+                         "transaction_history": {
+                           "resource_type": "list",
+                           "item_count": "1",
+                           "data": {
+                             "transaction": [{
+                               "id": "txn_o6DaefnmSpYJU7hy0VSzb2omeITr",
+                               "resource_type": "transaction",
+                               "account_uri": "pan:************0018",
+                               "transaction_amount": {
+                                 "value": "1008",
+                                 "currency": "USD"
+                               },
+                               "network": "STAR",
+                               "funds_availability": "IMMEDIATE",
+                               "type": "PAYMENT",
+                               "create_timestamp": "2019-08-29T09:20:30-05:00",
+                               "status": "APPROVED",
+                               "status_reason": "APPROVED",
+                               "status_timestamp": "2019-08-29T09:20:29-05:00",
+                               "retrieval_reference": "624200192616",
+                               "system_trace_audit_number": "926162"
+                             }]
+                           }
+                         },
+                         "reconciliation_data": {
+                           "custom_field": [
+                             {
+                               "name": "Claim Number",
+                               "value": "123"
+                             },
+                             {
+                               "name": "Agent",
+                               "value": "456"
+                             },
+                             {
+                               "name": "Policy",
+                               "value": "789"
+                             }
+                           ]
+                         },
+                         "statement_descriptor": "CLAIM 12345",
+                         "participant": {
+                           "merchant_category_code": "4121",
+                           "card_acceptor_id": "CardAcceptor123",
+                           "customer_service_contact_info": "18005559999"
+                         },
+                         "original_status": "APPROVED",
+                         "status": "APPROVED",
+                         "status_timestamp": "2019-08-29T09:20:29-05:00"
+                       }
+                     }
+   /send/v1/partners/{partnerId}/disbursements/{disbursementId}:
+      get:
+         tags:
+            - Disbursement
+         description: Purpose of this service is to retrieve the transaction of disbursement which is
+            already made to the consumer. Disbursement history can be retrieved using disbursement id.
+            Viewer can see the status of transaction using this service.
+         summary: Purpose of this service is to retrieve the transaction of disbursement which is already
+            made to the consumer. Disbursement history can be retrieved using disbursement id. Viewer
+            can see the status of transaction using this service.
+         operationId: retrieveDisbursement
+         produces:
+            - application/json
+         parameters:
+            -
+               in: path
+               name: partnerId
+               description: Path Param - Provider assigned partner id. Details - string, 32
+               required: true
+               type: string
+            -
+               in: path
+               name: disbursementId
+               description: Path Param - Valid Disbursement id
+               required: true
+               type: string
+         responses:
+            200:
+               description: Response details
+               schema:
+                  $ref: '#/definitions/Disbursement_wrapper'
+         x-testable: false
+         x-action: read by ID
+         x-samples:
+            -
+               name: RetrieveDisbursement
+               ordering: 550
+               ignoreAsserts:
+                  - disbursement.id
+                  - disbursement.disbursement_reference
+                  - disbursement.recipient_account_uri
+                  - disbursement.created
+                  - disbursement.transaction_history.data.transaction[0].id
+                  - disbursement.transaction_history.data.transaction[0].create_timestamp
+                  - disbursement.transaction_history.data.transaction[0].status_timestamp
+                  - disbursement.status_timestamp
+                  - disbursement.transaction_history.data.transaction[0].retrieval_reference
+                  - disbursement.transaction_history.data.transaction[0].system_trace_audit_number
+                  - disbursement.recipient
+                  - disbursement.recipient.first_name
+                  - disbursement.recipient.middle_name
+                  - disbursement.recipient.last_name
+                  - disbursement.recipient.nationality
+                  - disbursement.recipient.date_of_birth
+                  - disbursement.recipient.address
+                  - disbursement.recipient.address.line1
+                  - disbursement.recipient.address.line2
+                  - disbursement.recipient.address.city
+                  - disbursement.recipient.address.country_subdivision
+                  - disbursement.recipient.address.postal_code
+                  - disbursement.recipient.address.country
+                  - disbursement.recipient.phone
+                  - disbursement.recipient.email
+                  - disbursement.statement_descriptor
+                  - disbursement.recipient.government_ids.government_id_uri[0]
+                  - disbursement.sender_account_uri
+                  - disbursement.sender
+                  - disbursement.sender.first_name
+                  - disbursement.sender.middle_name
+                  - disbursement.sender.last_name
+                  - disbursement.sender.address
+                  - disbursement.sender.address.line1
+                  - disbursement.sender.address.line2
+                  - disbursement.sender.address.city
+                  - disbursement.sender.address.country_subdivision
+                  - disbursement.sender.address.postal_code
+                  - disbursement.sender.address.country
+                  - disbursement.sender.government_ids.government_id_uri[0]
+                  - disbursement.payment_origination_country
+                  - disbursement.original_status
+                  - disbursement.transaction_history.data.transaction[0].status
+                  - disbursement.transaction_history.data.transaction[0].status_reason
+                  - disbursement.status
+                  - disbursement.funding_source
+                  - disbursement.transaction_history.data.transaction[0].network
+                  - disbursement.transaction_history.data.transaction[0].network_status_code
+                  - disbursement.transaction_history.data.transaction[0].network_status_description
+                  - disbursement.transaction_history.data.transaction[0].funds_availability
+               overrides:
+                  -
+                     disbursementId: SendDisbursementWithNonTokenizedTransaction.disbursement.id
+               request:
+                  application/json: |
+                     {
+                      "partnerId": "ptnr_BEeCrYJHh2BXTXPy_PEtp-8DBOo",
+                      "disbursementId": "dsb_mwMk_w73pJUWUFypUA8JVF0bZHPE"
+                     }
+               response:
+                  application/json: |
+                     {
+                       "disbursement": {
+                         "id": "dsb_mwMk_w73pJUWUFypUA8JVF0bZHPE",
+                         "resource_type": "disbursement",
+                         "disbursement_reference": "dsb_20160829091750705",
+                         "recipient_account_uri": "id:acct_7ml5eNOF_u5WK3CTK2Ykke-leAd",
+                         "sender_account_uri": "raw:12345678901234567890",
+                          "sender": {
+                            "first_name": "XYZ",
+                            "middle_name": "",
+                            "last_name": "DBA MA",
+                            "address": {
+                              "line1": "123 Corporate Drive",
+                              "line2": "Suite 100",
+                              "city": "Chicago",
+                              "country_subdivision": "IL",
+                              "postal_code": "60618",
+                              "country": "USA"
+                            },
+                            "government_ids": {
+                              "government_id_uri": ["tin:12345678]
+                            }
+                          },
+                             "funding_source": "DEPOSIT_ACCOUNT",
+                         "recipient": {
+                           "first_name": "John",
+                           "middle_name": "Tyler",
+                           "last_name": "Smith",
+                           "nationality": "USA",
+                           "date_of_birth": "1999-12-30",
+                           "address": {
+                             "line1": "1 Main St",
+                             "line2": "Apartment 9",
+                             "city": "OFallon",
+                             "country_subdivision": "MO",
+                             "postal_code": "63368",
+                             "country": "USA"
+                           },
+                           "phone": "11234567890",
+                           "email": "Jane.Smith123@abcmail.com",
+                           "government_ids": { "government_id_uri": ["ppn:*****6789;expiration-date=2077-05-27;issue-date=2011-07-12;issuing-country=USA;issuing-place=OFallon" ]},
+                         },
+                         "payment_origination_country": "USA",
+                         "disbursement_amount": {
+                           "value": "1008",
+                           "currency": "USD"
+                         },
+                         "created": "2019-08-29T04:20:29.934-05:00",
+                         "transaction_history": {
+                           "resource_type": "list",
+                           "item_count": "1",
+                           "data": {
+                             "transaction": [{
+                               "id": "txn_o6DaefnmSpYJU7hy0VSzb2omeITr",
+                               "resource_type": "transaction",
+                               "account_uri": "pan:************0018",
+                               "transaction_amount": {
+                                 "value": "1008",
+                                 "currency": "USD"
+                               },
+                               "network": "STAR",
+                               "network_status_code": "00",
+                               "network_status_description": "Approved or completed successfully",
+                               "funds_availability": "IMMEDIATE",
+                               "type": "PAYMENT",
+                               "create_timestamp": "2019-08-29T04:20:29.938-05:00",
+                               "status": "APPROVED",
+                               "status_reason": "APPROVED",
+                               "status_timestamp": "2019-08-29T09:20:29-05:00",
+                               "retrieval_reference": "624200192616",
+                               "system_trace_audit_number": "926162"
+                             }]
+                           }
+                         },
+                         "reconciliation_data": {
+                           "custom_field": [
+                             {
+                               "name": "Claim Number",
+                               "value": "123"
+                             },
+                             {
+                               "name": "Agent",
+                               "value": "456"
+                             },
+                             {
+                               "name": "Policy",
+                               "value": "789"
+                             }
+                           ]
+                         },
+                         "statement_descriptor": "CLAIM 12345",
+                         "participant": {
+                           "merchant_category_code": "4121",
+                           "card_acceptor_id": "CardAcceptor123",
+                           "customer_service_contact_info": "18005559999"
+                         },
+                         "original_status": "APPROVED",
+                         "status": "APPROVED",
+                         "status_timestamp": "2019-08-29T04:20:30.112-05:00"
+                       }
+                     }
+   /send/v1/partners/{partnerId}/disbursements:
+      get:
+         tags:
+            - Disbursement
+         description: Purpose of this service is to retrieve the transaction of disbursement which is
+            already made to the consumer. Disbursement history can be retrieved using disbursement reference
+            number previously provided. Viewer can see the status of transaction using this service.
+         summary: Purpose of this service is to retrieve the transaction of disbursement which is already
+            made to the consumer. Disbursement history can be retrieved using disbursement reference number
+            previously provided. Viewer can see the status of transaction using this service.
+         operationId: retrieveDisbursementByRef
+         produces:
+            - application/json
+         parameters:
+            -
+               in: path
+               name: partnerId
+               description: Path Param - Provider assigned partner id. Details - string, 32
+               required: true
+               type: string
+            -
+               in: query
+               name: ref
+               description: Query Param - This is a reference number created by the client that must be unique
+                  for each payment request . This attribute can also be used as the idempotency key along
+                  with other attributes described in the Idempotency section below. Allowable characters
+                  are alphanumeric and the *,.-_ ~ characters. Details 6-40.
+               required: true
+               type: string
+         responses:
+            200:
+               description: Response details
+               schema:
+                  $ref: '#/definitions/Disbursements_wrapper'
+         x-testable: false
+         x-action: read by reference
+         x-samples:
+            -
+               name: RetrieveDisbursementByRef
+               ordering: 560
+               ignoreAsserts:
+                  - disbursements.data.disbursement[0].id
+                  - disbursements.data.disbursement[0].disbursement_reference
+                  - disbursements.data.disbursement[0].recipient_account_uri
+                  - disbursements.data.disbursement[0].sender_account_uri
+                  - disbursements.data.disbursement[0].created
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].id
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].create_timestamp
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].status_timestamp
+                  - disbursements.data.disbursement[0].status_timestamp
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].retrieval_reference
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].system_trace_audit_number
+                  - disbursements.data.disbursement[0].recipient.first_name
+                  - disbursements.data.disbursement[0].recipient.middle_name
+                  - disbursements.data.disbursement[0].recipient.last_name
+                  - disbursements.data.disbursement[0].recipient.nationality
+                  - disbursements.data.disbursement[0].recipient.date_of_birth
+                  - disbursements.data.disbursement[0].recipient.address
+                  - disbursements.data.disbursement[0].recipient.address.line1
+                  - disbursements.data.disbursement[0].recipient.address.line2
+                  - disbursements.data.disbursement[0].recipient.address.city
+                  - disbursements.data.disbursement[0].recipient.address.country_subdivision
+                  - disbursements.data.disbursement[0].recipient.address.postal_code
+                  - disbursements.data.disbursement[0].recipient.address.country
+                  - disbursements.data.disbursement[0].recipient.email
+                  - disbursements.data.disbursement[0].sender.first_name
+                  - disbursements.data.disbursement[0].sender.middle_name
+                  - disbursements.data.disbursement[0].sender.last_name
+                  - disbursements.data.disbursement[0].sender.address
+                  - disbursements.data.disbursement[0].sender.address.line1
+                  - disbursements.data.disbursement[0].sender.address.line2
+                  - disbursements.data.disbursement[0].sender.address.city
+                  - disbursements.data.disbursement[0].sender.address.country_subdivision
+                  - disbursements.data.disbursement[0].sender.address.postal_code
+                  - disbursements.data.disbursement[0].sender.address.country
+                  - disbursements.data.disbursement[0].disbursement_amount.value
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].transaction_amount.value
+                  - disbursements.data.disbursement[0].statement_descriptor
+                  - disbursements.government_ids.government_id_uri[0]
+                  - disbursements.data.disbursement[0].recipient.government_ids.government_id_uri[0]
+                  - disbursements.data.disbursement[0].sender.government_ids.government_id_uri[0]
+                  - disbursements.data.disbursement[0].payment_origination_country
+                  - disbursements.data.disbursement[0].original_status
+                  - disbursements.data.disbursement[0].payment_origination_country
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].network
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].network_status_code
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].network_status_description
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].funds_availability
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].status
+                  - disbursements.data.disbursement[0].transaction_history.data.transaction[0].status_reason
+                  - disbursements.data.disbursement[0].status
+                  - disbursements.data.disbursement[0].funding_source
+               overrides:
+                  -
+                     ref: SendDisbursementWithNonTokenizedTransaction.disbursement.disbursement_reference
+               request:
+                  application/json: |
+                     {
+                      "partnerId": "ptnr_BEeCrYJHh2BXTXPy_PEtp-8DBOo",
+                      "ref": "dsb_20160829091750705"
+                     }
+               response:
+                  application/json: |
+                     {
+                       "disbursements": {
+                         "resource_type": "list",
+                         "item_count": "1",
+                         "government_ids": { "government_id_uri": ["ppn:*****6789;expiration-date=2077-05-27;issue-date=2011-07-12;issuing-country=USA;issuing-place=OFallon" ]},
+                         "data": {
+                           "disbursement": [{
+                             "id": "dsb_mwMk_w73pJUWUFypUA8JVF0bZHPE",
+                             "resource_type": "disbursement",
+                             "disbursement_reference": "dsb_20160829091750705",
+                             "sender_account_uri": "raw:12345678901234567890",
+                               "sender": {
+                                 "first_name": "XYZ",
+                                 "middle_name": "",
+                                 "last_name": "DBA MA",
+                                 "address": {
+                                   "line1": "123 Corporate Drive",
+                                   "line2": "Suite 100",
+                                   "city": "Chicago",
+                                   "country_subdivision": "IL",
+                                   "postal_code": "60618",
+                                   "country": "USA"
+                                 },
+                                 "government_ids": {
+                                   "government_id_uri": ["tin:12345678]
+                                 }
+                               },
+                                  "funding_source": "DEPOSIT_ACCOUNT",
+                             "recipient_account_uri": "id:acct_7ml5eNOF_u5WK3CTK2Ykke-leAd",
+                             "recipient": {
+                               "first_name": "John",
+                               "middle_name": "Tyler",
+                               "last_name": "Smith",
+                               "nationality": "USA",
+                               "date_of_birth": "1999-12-30",
+                               "address": {
+                                 "line1": "1 Main St",
+                                 "line2": "Apartment 9",
+                                 "city": "OFallon",
+                                 "country_subdivision": "MO",
+                                 "postal_code": "63368",
+                                 "country": "USA"
+                               },
+                               "phone": "11234567890",
+                               "email": "Jane.Smith123@abcmail.com",
+                               "government_ids": { "government_id_uri": ["ppn:*****6789;expiration-date=2077-05-27;issue-date=2011-07-12;issuing-country=USA;issuing-place=OFallon"] },
+                             },
+                             "payment_origination_country": "USA",
+                             "disbursement_amount": {
+                               "value": "1008",
+                               "currency": "USD"
+                             },
+                             "created": "2019-08-29T04:20:29.934-05:00",
+                             "transaction_history": {
+                               "resource_type": "list",
+                               "item_count": "1",
+                               "data": {
+                                 "transaction": [{
+                                   "id": "txn_o6DaefnmSpYJU7hy0VSzb2omeITr",
+                                   "resource_type": "transaction",
+                                   "account_uri": "pan:************0018",
+                                   "transaction_amount": {
+                                     "value": "1008",
+                                     "currency": "USD"
+                                   },
+                                   "network": "STAR",
+                                   "network_status_code": "00",
+                                   "network_status_description": "Approved or completed successfully",
+                                   "funds_availability": "IMMEDIATE",
+                                   "type": "PAYMENT",
+                                   "create_timestamp": "2019-08-29T04:20:29.938-05:00",
+                                   "status": "APPROVED",
+                                   "status_reason": "APPROVED",
+                                   "status_timestamp": "2019-08-29T09:20:29-05:00",
+                                   "retrieval_reference": "624200192616",
+                                   "system_trace_audit_number": "926162"
+                                 }]
+                               }
+                             },
+                             "reconciliation_data": {
+                               "custom_field": [
+                                 {
+                                   "name": "Claim Number",
+                                   "value": "123"
+                                 },
+                                 {
+                                   "name": "Agent",
+                                   "value": "456"
+                                 },
+                                 {
+                                   "name": "Policy",
+                                   "value": "789"
+                                 }
+                               ]
+                             },
+                             "statement_descriptor": "CLAIM 12345",
+                             "participant": {
+                               "merchant_category_code": "4121",
+                               "card_acceptor_id": "CardAcceptor123",
+                               "customer_service_contact_info": "18005559999"
+                             },
+                             "original_status": "APPROVED",
+                             "status": "APPROVED",
+                             "status_timestamp": "2019-08-29T04:20:30.112-05:00"
+                           }]
+                         }
+                       }
+                     }
+definitions:
+   GovernmentIdsRecipient:
+      type: object
+      description: Recipient Government ID.
+      properties:
+         government_id_uri:
+            type: array
+            description: URI describing the recipient government id. See 'Government ID URIs'.
+            items:
+               type: string
+      xml:
+         name: government_ids
+   GovernmentIdsSender:
+      type: object
+      description: Sender Government ID.
+      properties:
+         government_id_uri:
+            type: array
+            description: URI describing the sender government id. See 'Government ID URIs'.
+            items:
+               type: string
+      xml:
+         name: government_ids
+   Request_Recipient_Address:
+      type: object
+      required:
+         - line1
+         - city
+         - postal_code
+      description: Request Recipient's home address Address information is conditional and is required
+         if an OFAC check is required for the receiver. Detail of recipient.address lists the specific
+         fields that are required. Details- Conditional
+      properties:
+         line1:
+            description: First line of recipient's home address. Details- 1-50
+            type: string
+            example: "1 Main St"
+         line2:
+            description: Second line of recipient's home address. Details- 1-50
+            type: string
+            example: "Apartment 9"
+         city:
+            description: Home city. Details- 1-25
+            type: string
+            example: "OFallon"
+         country_subdivision:
+            description: The state or province as an ISO 3166-2 alpha-numeric 2 or 3 character country
+               subdivision code. If country is US or Canada, country subdivision must be valid. Details-
+               2-3
+            type: string
+            example: "MO"
+         postal_code:
+            description: 'Home postal code.  US - Format in 5 digits, 5 digits hyphen 4 digits, Details
+               numeric length: 5, 5-4. For Non-US -  alphanumeric length: 10'
+            type: string
+            example: "63368"
+         country:
+            description: 'The recipient''s home country as an ISO 3166-1 alpha-3 country code, in uppercase.
+               Details - Conditional: Required if partner has opted in for Sanction Screening validation
+               and was configured for the partner during onboarding. Details - 3'
+            type: string
+            example: "USA"
+      xml:
+         name: address
+   Sender:
+      type: object
+      required:
+         - first_name
+         - last_name
+      description: ' Listing of data for Sender of funds. Valid Values- Refer ''Recipient Type'''
+      properties:
+         first_name:
+            description: Sender's first name. When sender.first_name is present in request, then sender.last_name is required
+            type: string
+            example: "XYZ"
+         middle_name:
+            description: Sender's middle name. This field is optional
+            type: string
+            example: ""
+         last_name:
+            description: Sender's last name. When sender.last_name is present in request, then sender.first_name is required
+            type: string
+            example: "DMA MA"
+         address:
+            $ref: '#/definitions/Sender_Address_Request'
+         government_ids:
+            $ref: '#/definitions/GovernmentIdsSender'
+      xml:
+         name: sender
+   SenderResponse:
+      type: object
+      description: ' Listing of data for Sender of funds. Valid Values- Refer ''Recipient Type'''
+      properties:
+         first_name:
+            description: Sender's first name. When sender.first_name is present in request, then sender.last_name is required
+            type: string
+            example: "XYZ"
+         middle_name:
+            description: Sender's middle name. This field is optional
+            type: string
+            example: ""
+         last_name:
+            description: Sender's last name. When sender.last_name is present in request, then sender.first_name is required
+            type: string
+            example: "DMA MA"
+         address:
+            $ref: '#/definitions/Sender_Address_Response'
+         government_ids:
+            $ref: '#/definitions/GovernmentIdsSender'
+      xml:
+         name: sender
+   Recipient:
+      type: object
+      required:
+         - first_name
+         - last_name
+      description: ' Listing of data for recipient of funds. Valid Values- Refer ''Recipient Type'''
+      properties:
+         first_name:
+            description: Recipient's first name.
+            type: string
+            example: "Jane"
+         middle_name:
+            description: Recipient's middle name.
+            type: string
+            example: "Tyler"
+         last_name:
+            description: Recipient's last name.
+            type: string
+            example: "Smith"
+         nationality:
+            description: The recipient's home country as an ISO 3166-1 alpha-3 country code, in uppercase.
+            type: string
+            example: "USA"
+         date_of_birth:
+            description: 'The consumer''s date of birth as an ISO 8601 Details- Full Date: YYYY-MM-DD
+               Valid Values- Refer ''Date And Time Formats'''
+            type: string
+            example: "1999-12-30"
+         address:
+            $ref: '#/definitions/Request_Recipient_Address'
+         phone:
+            description: ' Recipient''s phone number, including country code.'
+            type: string
+            example: "11234567890"
+         email:
+            description: ' Recipient''s email address.'
+            type: string
+            example: "Jane.Smith123@abcmail.com"
+         government_ids:
+            $ref: '#/definitions/GovernmentIdsRecipient'
+         name_on_account:
+            description: Name on the account. Applicable for non-card only. Details- 1-40
+            type: string
+            example: "Jane Smith"
+      xml:
+         name: recipient
+   Recipient_Response:
+      type: object
+      description: ' Listing of data for recipient of funds. Valid Values- Refer ''Recipient Type'''
+      properties:
+         first_name:
+            description: Recipient's first name.
+            type: string
+            example: "Jane"
+         middle_name:
+            description: Recipient's middle name.
+            type: string
+            example: "Tyler"
+         last_name:
+            description: Recipient's last name.
+            type: string
+            example: "Smith"
+         nationality:
+            description: The recipient's home country as an ISO 3166-1 alpha-3 country code, in uppercase.
+            type: string
+            example: "USA"
+         date_of_birth:
+            description: 'The consumer''s date of birth as an ISO 8601 Details- Full Date: YYYY-MM-DD
+               Valid Values- Refer ''Date And Time Formats'''
+            type: string
+            example: "1999-12-30"
+         address:
+            $ref: '#/definitions/Disbursements_Response_Recipient_Address'
+         phone:
+            description: ' Recipient''s phone number, including country code.'
+            type: string
+            example: "11234567890"
+         email:
+            description: ' Recipient''s email address.'
+            type: string
+            example: "Jane.Smith123@abcmail.com"
+         government_ids:
+            $ref: '#/definitions/GovernmentIdsRecipient'
+         name_on_account:
+            description: Name on the account. Applicable for non-card only. Details- 1-40
+            type: string
+            example: "Jane Smith"
+      xml:
+         name: recipient
+   CustomField:
+      type: object
+      description: Contains custom field names and values to appear in the reconciliation report for this
+         disbursement. This could be a list of multiple values
+      properties:
+         name:
+            description: Name to be displayed in the reconciliation report for this disbursement. This
+               value will appear as a header in the column name of the report. The fields that can be
+               used have to be defined during the onboarding process. Details- 1-40
+            type: string
+            example: "Claim Number"
+         value:
+            description: Value to be displayed in the reconciliation report for this disbursement.Details-
+               1-200
+            type: string
+            example: "123"
+      xml:
+         name: custom_field
+   ReconciliationData:
+      type: object
+      description: Contains information that needs to appear in the reconciliation report for this disbursement.
+      properties:
+         custom_field:
+            description: Contains custom field names and values to appear in the reconciliation report
+               for this disbursement. This could be a list of multiple values
+            type: array
+            items:
+               $ref: '#/definitions/CustomField'
+      xml:
+         name: reconciliation_data
+   Participant:
+      type: object
+      description: "Information about a participant that may be passed along to the network.\_"
+      properties:
+         merchant_category_code:
+            description: "Classification of the merchant\u2019s type of business or service.\_ Please\
+               \ contact your MasterCard Representative to enable the usage of fields in this section\
+               . Details- numeric, 4"
+            type: string
+            example: "4121"
+         interchange_rate_designator:
+            description: The IRD used for clearing the transaction on the Mastercard network. Details - Alphanumeric, length 2 characters.
+            type: string
+            example: "A3"
+         card_acceptor_id:
+            description: "Code identifying the card acceptor.\_\_Please contact your MasterCard Repre\
+               sentative to enable the usage of fields in this section.\_ Details - alphanumeric, 10-\
+               15"
+            type: string
+            example: "CardAcceptor123"
+         customer_service_contact_info:
+            description: "Customer service phone number, tiny url or email that may be displayed on t\
+               he recipient\u2019s bank or card statement. \_Please contact your MasterCard Represent\
+               ative to enable the usage of fields in this section.\_\_Details - alphanumeric, specia\
+               l, 1-13"
+            type: string
+            example: "18005559999"
+      xml:
+         name: participant
+   PaymentDisbursement:
+      type: object
+      required:
+         - disbursement_reference
+         - amount
+         - currency
+         - recipient_account_uri
+      description: Contains the details of the request message.
+      properties:
+         disbursement_reference:
+            description: This is a client-specific identifier for the disbursement. It must be unique
+               within the client's domain. Allowable characters are alphanumeric and the *,.-_ ~ characters.
+               Details- 6-40
+            type: string
+            example: "DEF123456"
+         payment_type:
+            description: 'BDB: Business Disbursements, GDB: Government Disbursements, AMS: Acquirer Merchant
+               Settlement, CBP: Credit Card Billpayment, B2B: Business-to-Business. This parameter should be defined during onboarding
+               process. If multiple payment types are setup for a partner the right payment type corresponding
+               to the request should be specified. Details-Conditional'
+            type: string
+            example: "BDB"
+         amount:
+            description: 'The amount to be paid to the recipient in the smallest unit of the currency.
+               Example: 100 = $1.00 (assuming USD). Details- numeric, 1-999999999999'
+            type: string
+            example: "1000"
+         currency:
+            description: The currency of the disbursement amount as an ISO 4217 alpha-3 currency code,
+               in uppercase. Details- alpha, 3
+            type: string
+            example: "USD"
+         sender_account_uri:
+            description: 'URI to identify the account of the sender. When providing a URI containing a
+                        PAN the payment_transfer.sender section is required. If scheme chosen is raw, then funding_source
+                        must be other than CREDIT, DEBIT or PREPAID. When providing a URI containing a non-card
+                        Token, it is applicable only for non-card. Valid Values- Refer ''Account URIs'' '
+            type: string
+            example: "pan:************9012"
+         sender:
+               $ref: '#/definitions/Sender'
+         recipient_account_uri:
+            description: URI identifying recipient's account to receive the disbursement funds.  Valid
+               Values- Refer 'Account URIs', pan, acct-token, and iban are valid values.  Iban or fps
+               are valid for the UK.
+            type: string
+            example: "pan:5432123456789012;exp=2077-02;cvc=123"
+         recipient:
+            $ref: '#/definitions/Recipient'
+         payment_origination_country:
+            description: 'The country where the payment originates from as an ISO 3166-1 alpha-3 country
+               code, in uppercase. Details - Conditional. If provided, this should match a valid country
+               configured for the partner during onboarding. If the partner is configured for multiple
+               origination countries this field is required and must be provided. Alpha, length: 3'
+            type: string
+            example: "USA"
+         sanction_screening_override:
+            description: "Override indicator if partner has opted into Sanction Screening validation \
+               as part of transaction processing.  If Sanction Screening score on either sender or re\
+               ceiver is equal to or above threshold configured for partner, the payment will error. \
+               \ To bypass the Sanction Screening validation and process the payment the value 'true'\
+               \ should be submitted.  Details:  Optional \u2013 If partner has not enabled Sanction \
+               Screening validation default is 'true'.   Required - If partner has opted into Sanctio\
+               n Screening validation but wants to bypass Sanction Screening validation and process t\
+               he payment, value should be 'true'. "
+            type: boolean
+            example: "true"
+         reconciliation_data:
+            $ref: '#/definitions/ReconciliationData'
+         statement_descriptor:
+            description: 'The statement descriptor is a string which will be displayed on the recipient''s
+               bank or card statement. It consists of one or two parts: the prefix and the content. The
+               prefix is an optional short string typically used to identify the client/merchant. It is
+               defined during client/merchant onboarding and the same value should be used. If not provided
+               in the API call, system will use the value defined in the onboarding process. The content
+               portion of the statement descriptor client/merchant-defined information to be presented
+               on the recipient''s statement. If both the prefix and content portions are defined, they
+               both are appended &lt;prefix&gt;+&lt;content&gt; The overall length may be at most 22 characters,
+               including the prefix (even if not provided in the API call) and the content. Note: While
+               most financial institutions display this information consistently, some may display it
+               incorrectly or not at all. Details- 1-22'
+            type: string
+            example: "CLAIM 12345"
+         participant:
+            $ref: '#/definitions/Participant'
+         funding_source:
+            description: 'Funding source must contain one of the following: CREDIT, DEBIT, PREPAID, DEPOSIT_ACCOUNT,
+                        MOBILE_MONEY_ACCOUNT or CASH.'
+            type: string
+            example: "DEBIT"
+         funding_account_uri:
+            description: URI identifying senders account to disburse funds with. Valid Values- Refer to
+               'Account URIs'. Applicable for non-card only. Details - Conditional
+            type: string
+            example: "non-card-token:suZz18lhAFvx9LQa6U2VMxs0BJLAD_TXVzYvaqTsjcG_AImuzmvNXQ"
+         transfer_priority:
+            description: 'Type of payment instruction to send. Applicable for non-card only. Values: SIP
+               - Standard immediate payment (default), FDP - Future dated payment'
+            type: string
+            example: "SIP"
+      xml:
+         name: payment_disbursement
+   Disbursements_Response_Recipient_Address:
+      type: object
+      description: Response Recipient's home address.
+      properties:
+         line1:
+            description: First line of recipient's home address.
+            type: string
+            example: "1 Main St"
+         line2:
+            description: Second line of recipient's home address.
+            type: string
+            example: "Apartment 9"
+         city:
+            description: Home city.
+            type: string
+            example: "OFallon"
+         country_subdivision:
+            description: The state or province as an ISO 3166-2 alpha-numeric 2 or 3 character country
+               subdivision code. If country is US or Canada, country subdivision must be valid.
+            type: string
+            example: "MO"
+         postal_code:
+            description: Home postal code.
+            type: string
+            example: "63368"
+         country:
+            description: The recipient's home country as an ISO 3166-1 alpha-3 country code, in uppercase.
+            type: string
+            example: "USA"
+      xml:
+         name: address
+   Sender_Address_Request:
+      type: object
+      required:
+         - line1
+         - city
+         - postal_code
+         - country
+      description: Sender's home address.
+      properties:
+         line1:
+            description: First line of sender's home address.
+            type: string
+            example: "1 Main St"
+         line2:
+            description: Second line of sender's home address.
+            type: string
+            example: "Apartment 9"
+         city:
+            description: Home city.
+            type: string
+            example: "OFallon"
+         country_subdivision:
+            description: The state or province as an ISO 3166-2 alpha-numeric 2 or 3 character country
+               subdivision code. If country is US or Canada, country subdivision must be valid.
+            type: string
+            example: "MO"
+         postal_code:
+            description: Home postal code.
+            type: string
+            example: "63368"
+         country:
+            description: The sender's home country as an ISO 3166-1 alpha-3 country code, in uppercase.
+            type: string
+            example: "USA"
+      xml:
+         name: address
+   Sender_Address_Response:
+      type: object
+      description: Sender's home address.
+      properties:
+         line1:
+            description: First line of sender's home address.
+            type: string
+            example: "1 Main St"
+         line2:
+            description: Second line of sender's home address.
+            type: string
+            example: "Apartment 9"
+         city:
+            description: Home city.
+            type: string
+            example: "OFallon"
+         country_subdivision:
+            description: The state or province as an ISO 3166-2 alpha-numeric 2 or 3 character country
+               subdivision code. If country is US or Canada, country subdivision must be valid.
+            type: string
+            example: "MO"
+         postal_code:
+            description: Home postal code.
+            type: string
+            example: "63368"
+         country:
+            description: The sender's home country as an ISO 3166-1 alpha-3 country code, in uppercase.
+            type: string
+            example: "USA"
+      xml:
+         name: address
+   DisbursementAmount:
+      type: object
+      description: Describes the amount to be paid to the recipient.
+      properties:
+         value:
+            description: 'The amount to be paid to the recipient in the smallest unit of the currency.
+               Example: 100 = $1.00 (assuming USD). Details-  numeric, 1-999999999999'
+            type: string
+            example: "1000"
+         currency:
+            description: The currency of the amount to be paid to the recipient as an ISO 4217 alpha-3
+               currency code, in uppercase. Details- alpha , 3
+            type: string
+            example: "USD"
+      xml:
+         name: disbursement_amount
+   TransactionAmount:
+      type: object
+      description: Describes the amount to be paid to the recipient.
+      properties:
+         value:
+            description: 'Amount of the transaction. The amount to be paid to the recipient in the smallest
+               unit of the currency. Example: 100 = $1.00 (assuming USD in transaction_amount.currency).
+               Details- numeric, minimum value 1 , maximum value 999999999999'
+            type: string
+            example: "1000"
+         currency:
+            description: The currency of the transaction amount as an ISO 4217 Details- alpha-3 currency
+               code, in uppercase.
+            type: string
+            example: "USD"
+      xml:
+         name: transaction_amount
+   Transaction:
+      type: object
+      description: ""
+      properties:
+         id:
+            description: System generated unique transaction identifier.
+            type: string
+            example: "txn_m2m543rw83fd88fc0"
+         resource_type:
+            description: 'Type of resource. Valid value:  transaction'
+            type: string
+            example: "transaction"
+         account_uri:
+            description: Scrubbed URI describing the account. It will include masked account information
+               (e.g. "************1234" for a card account) but will not include security codes (e.g.
+               CVC or expiration date for a card account).
+            type: string
+            example: " pan:************9012"
+         transaction_amount:
+            $ref: '#/definitions/TransactionAmount'
+         network:
+            description: Name of the network that processed this transaction.
+            type: string
+            example: "MasterCard"
+         network_status_code:
+            description: Network Status Code in case of Decline.
+            type: string
+            example: "54"
+         network_status_description:
+            description: ' Network Status Description in case of Decline.'
+            type: string
+            example: "Expired Card."
+         funds_availability:
+            description: 'An estimate of when the funds might be available. Actual Deposit Availability
+               is determined by the financial institution. Details- One of: IMMEDIATE, SAME_DAY, NEXT_CALENDAR_DAY,
+               NEXT_BUSINESS_DAY, TWO_TO_FIVE_BUSINESS_DAYS, or UNKNOWN.'
+            type: string
+            example: "IMMEDIATE"
+         type:
+            description: 'Type of the transaction. One of: FUNDING, PAYMENT, FUNDING_REVERSAL, or PAYMENT_REVERSAL'
+            type: string
+            example: "PAYMENT"
+         create_timestamp:
+            description: Date and time the transaction was created as an ISO 8601 Timestamp. Details-
+               YYYY-MM-DDTHH:MM:SSZ Valid Values- Refer 'Date And Time Formats'
+            type: string
+            example: "2019-03-18T14:18:55Z"
+         status:
+            description: Status of the disbursement. One of APPROVED, DECLINED, UNKNOWN, ERROR, LIMIT_EXCEEDED
+               or PENDING.
+            type: string
+            example: "APPROVED"
+         status_reason:
+            description: Reason for status, APPROVED, DECLINED, FRAUD, CARD_EXPIRED, UNKNOWN, ERROR, LIMIT_EXCEEDED
+               or PENDING
+            type: string
+            example: "APPROVED"
+         status_timestamp:
+            description: Date and time of when the status was changed to its current value as an ISO 8601
+               Timestamp. Details-  YYYY-MM-DDTHH:MM:SSZ Valid Values- Refer 'Date And Time Formats'
+            type: string
+            example: "2019-03-18T14:18:56Z"
+         retrieval_reference:
+            description: Unique reference number that identifies the transaction at the network. Details-
+               maxlength 24
+            type: string
+            example: "624200192616"
+         system_trace_audit_number:
+            description: Unique system trace audit number for the transaction, the STAN ( system trace
+               audit number ). Details- maxlength 6
+            type: string
+            example: "926162"
+      xml:
+         name: transaction
+   Data:
+      type: object
+      description: An array containing the Transactions in the disbursement. Valid Values- Refer 'Transaction
+         Data'
+      properties:
+         transaction:
+            description: ""
+            type: array
+            items:
+               $ref: '#/definitions/Transaction'
+      xml:
+         name: data
+   TransactionHistory:
+      type: object
+      description: A list of transaction IDs for all Transactions in the disbursement.
+      properties:
+         resource_type:
+            description: 'Resource type of the resource that is being returned.  Valid value:  list'
+            type: string
+            example: "list"
+         item_count:
+            description: Number of Transactions in the list Details- Numeric
+            type: integer
+            format: int64
+            example: "1"
+         data:
+            $ref: '#/definitions/Data'
+      xml:
+         name: transaction_history
+   Disbursement:
+      type: object
+      description: Response details
+      properties:
+         id:
+            description: System generated unique disbursement identifier.
+            type: string
+            example: "dsb_jk23l6c5lw5f8h4me233"
+         resource_type:
+            description: 'Resource type of the resource that is being returned. Valid value:  disbursement'
+            type: string
+            example: "disbursement"
+         disbursement_reference:
+            description: This is a client-specific identifier for the disbursement. It must be unique
+               within the client's domain. Allowable characters are alphanumeric and * , - . _ ~ Details-
+               6-40
+            type: string
+            example: "DEF123456"
+         payment_type:
+            description: 'BDB: Business Disbursements, GDB: Government Disbursements, AMS: Acquirer Merchant
+               Settlement, CBP: Credit Card Billpayment, B2B: Business-to-Business. This parameter should be defined during onboarding
+               process. If multiple payment types are setup for a partner the right payment type corresponding
+               to the request should be specified.'
+            type: string
+            example: "BDB"
+         sender_account_uri:
+            description: Scrubbed URI describing the account. It will include masked account information
+               (e.g. "************1234" for a card account) but will not include security codes (e.g.
+               CVC or expiration date for a card account). Valid Values- Refer 'Account URIs'
+            type: string
+            example: "acct-ref:ABCD123456789"
+         sender:
+               $ref: '#/definitions/SenderResponse'
+         recipient_account_uri:
+            description: Scrubbed URI describing the account. It will include masked account information
+               (e.g. "************1234" for a card account) but will not include security codes (e.g.
+               CVC or expiration date for a card account). Valid Values- Refer 'Account URIs'
+            type: string
+            example: "acct-ref:ABCD123456789"
+         recipient:
+            $ref: '#/definitions/Recipient_Response'
+         payment_origination_country:
+            description: Country where the payment originated from as an ISO 3166-1 alpha-3 country code,
+               in uppercase.  Details- Alpha, 3
+            type: string
+            example: "USA"
+         sanction_screening_override:
+            description: Sanction Screening validation override if enabled for partner.
+            type: boolean
+            example: "false"
+         disbursement_amount:
+            $ref: '#/definitions/DisbursementAmount'
+         created:
+            description: Date and time the original disbursement was created as an ISO 8601 Timestamp.
+               Details- YYYY-MM-DDTHH:MM:SSZ Valid Values- Refer 'Date And Time Formats'
+            type: string
+            example: "2019-03-18T14:18:55Z"
+         transaction_history:
+            $ref: '#/definitions/TransactionHistory'
+         reconciliation_data:
+            $ref: '#/definitions/ReconciliationData'
+         statement_descriptor:
+            description: 'The statement descriptor is a string which will be displayed on the recipient''s
+               bank or card statement. Note: While most financial institutions display this information
+               consistently, some may display it incorrectly or not at all. Details- 1-22'
+            type: string
+            example: "CLAIM 12345"
+         status:
+            description: Status of the disbursement. One of APPROVED, DECLINED, ERROR, PENDING, REVERSED,
+               CANCELLED, UNKNOWN.
+            type: string
+            example: "APPROVED"
+         original_status:
+            description: Original status of the transfer. One of APPROVED, DECLINED, ERROR, PENDING, UNKNOWN.
+            type: string
+            example: "APPROVED"
+         status_timestamp:
+            description: Date and time of when the status was changed to its current value as an ISO 8601
+               Timestamp. Details- YYYY-MM-DDTHH:MM:SSZ Valid Values- Refer 'Date And Time Formats'
+            type: string
+            example: "2019-03-19T14:18:55Z"
+         participant:
+            $ref: '#/definitions/Participant'
+         funding_source:
+            description: 'Funding source must contain one of the following: CREDIT, DEBIT, PREPAID, DEPOSIT_ACCOUNT,
+                                   MOBILE_MONEY_ACCOUNT or CASH.'
+            type: string
+            example: "DEBIT"
+         funding_account_uri:
+            description: Scrubbed URI describing the account. It will include masked account information
+               (e.g. "****1234" for a bank account).  Valid Values- Refer 'Account URIs'.  Applicable
+               for non-card only.
+            type: string
+            example: "non-card-token:suZz18lhAFvx9LQa6U2VMxs0BJLAD_TXVzYvaqTsjcG_AImuzmvNXQ"
+         transfer_priority:
+            description: 'Type of payment instruction to send. Applicable for non-card only. Values: SIP
+               - Standard immediate payment (default), FDP - Future dated payment'
+            type: string
+            example: "SIP"
+         faster_payments_id:
+            description: Unique identifier of the payment within the scheme. 42 character string, in which
+               the last five characters are almost always spaces. Applicable for non-card only.
+            type: string
+            example: "YE78126Q54WK2J06M33020170720826608371"
+         payment_uid:
+            description: Unique identifier of the payment the notification relates to.  Applicable for
+               non-card only.
+            type: string
+            example: "32e2f3f9-dee4-4d10-a470-3dfa01dbf118"
+      xml:
+         name: disbursement
+   Disbursement_Reference_Response:
+      type: object
+      description: Response details
+      properties:
+         id:
+            description: System generated unique disbursement identifier.
+            type: string
+            example: "dsb_jk23l6c5lw5f8h4me233"
+         resource_type:
+            description: 'Resource type of the resource that is being returned. Valid value:  disbursement'
+            type: string
+            example: "disbursement"
+         disbursement_reference:
+            description: This is a client-specific identifier for the disbursement. It must be unique
+               within the client's domain. Allowable characters are alphanumeric and * , - . _ ~ Details-
+               6-40
+            type: string
+            example: "DEF123456"
+         payment_type:
+            description: 'BDB: Business Disbursements, GDB: Government Disbursements, AMS: Acquirer Merchant
+               Settlement, CBP: Credit Card Billpayment, B2B: Business-to-Business. This parameter should be defined during onboarding
+               process. If multiple payment types are setup for a partner the right payment type corresponding
+               to the request should be specified.'
+            type: string
+            example: "BDB"
+         sender_account_uri:
+            description: 'URI to identify the account of the sender. When providing a URI containing a
+                        PAN the payment_transfer.sender section is required. If scheme chosen is raw, then funding_source
+                        must be other than CREDIT, DEBIT or PREPAID. When providing a URI containing a non-card
+                        Token, it is applicable only for non-card. Valid Values- Refer ''Account URIs'' '
+            type: string
+            example: "pan:************9012"
+         sender:
+               $ref: '#/definitions/SenderResponse'
+         recipient_account_uri:
+            description: Scrubbed URI describing the account. It will include masked account information
+               (e.g. "************1234" for a card account) but will not include security codes (e.g.
+               CVC or expiration date for a card account). Valid Values- Refer 'Account URIs'
+            type: string
+            example: "acct-ref:ABCD123456789"
+         recipient:
+            $ref: '#/definitions/Recipient_Response'
+         payment_origination_country:
+            description: Country where the payment originated from as an ISO 3166-1 alpha-3 country code,
+               in uppercase.  Details- Alpha, 3
+            type: string
+            example: "USA"
+         sanction_screening_override:
+            description: Sanction Screening validation override if enabled for partner.
+            type: boolean
+            example: "false"
+         disbursement_amount:
+            $ref: '#/definitions/DisbursementAmount'
+         created:
+            description: Date and time the original disbursement was created as an ISO 8601 Timestamp.
+               Details- YYYY-MM-DDTHH:MM:SSZ Valid Values- Refer 'Date And Time Formats'
+            type: string
+            example: "2019-03-18T14:18:55Z"
+         transaction_history:
+            $ref: '#/definitions/TransactionHistory'
+         reconciliation_data:
+            $ref: '#/definitions/ReconciliationData'
+         statement_descriptor:
+            description: 'The statement descriptor is a string which will be displayed on the recipient''s
+               bank or card statement. Note: While most financial institutions display this information
+               consistently, some may display it incorrectly or not at all. Details- 1-22'
+            type: string
+            example: "CLAIM 12345"
+         status:
+            description: Status of the disbursement. One of APPROVED, DECLINED, ERROR, PENDING, REVERSED,
+               CANCELLED, UNKNOWN.
+            type: string
+            example: "APPROVED"
+         original_status:
+            description: Original status of the transfer. One of APPROVED, DECLINED, ERROR, PENDING, UNKNOWN.
+            type: string
+            example: "APPROVED"
+         status_timestamp:
+            description: Date and time of when the status was changed to its current value as an ISO 8601
+               Timestamp. Details- YYYY-MM-DDTHH:MM:SSZ Valid Values- Refer 'Date And Time Formats'
+            type: string
+            example: "2019-03-19T14:18:55Z"
+         participant:
+            $ref: '#/definitions/Participant'
+         funding_source:
+            description: 'Funding source must contain one of the following: CREDIT, DEBIT, PREPAID, DEPOSIT_ACCOUNT,
+                        MOBILE_MONEY_ACCOUNT or CASH.'
+            type: string
+            example: "DEBIT"
+         funding_account_uri:
+            description: Scrubbed URI describing the account. It will include masked account information
+               (e.g. "****1234" for a bank account).  Valid Values- Refer 'Account URIs'.  Applicable
+               for non-card only.
+            type: string
+            example: "non-card-token:suZz18lhAFvx9LQa6U2VMxs0BJLAD_TXVzYvaqTsjcG_AImuzmvNXQ"
+         transfer_priority:
+            description: 'Type of payment instruction to send. Applicable for non-card only. Values: SIP
+               - Standard immediate payment (default), FDP - Future dated payment'
+            type: string
+            example: "SIP"
+         faster_payments_id:
+            description: Unique identifier of the payment within the scheme. 42 character string, in which
+               the last five characters are almost always spaces. Applicable for non-card only.
+            type: string
+            example: "YE78126Q54WK2J06M33020170720826608371"
+         payment_uid:
+            description: Unique identifier of the payment the notification relates to.  Applicable for
+               non-card only.
+            type: string
+            example: "32e2f3f9-dee4-4d10-a470-3dfa01dbf118"
+      xml:
+         name: disbursementGovernmentIds
+   Disbursements_Data:
+      type: object
+      description: An array containing the Disbursement Transactions Response in the transfer
+      properties:
+         disbursement:
+            description: Response details
+            type: array
+            items:
+               $ref: '#/definitions/Disbursement_Reference_Response'
+      xml:
+         name: data
+   Disbursements:
+      type: object
+      description: Response details
+      properties:
+         resource_type:
+            description: Type of resource
+            type: string
+            example: "list"
+         item_count:
+            description: Number of Transactions in the list
+            type: integer
+            format: int64
+            example: "2"
+         data:
+            $ref: '#/definitions/Disbursements_Data'
+      xml:
+         name: disbursements
+   PaymentDisbursement_wrapper:
+      description: Contains the details of the request message.
+      properties:
+         payment_disbursement:
+            $ref: '#/definitions/PaymentDisbursement'
+   Disbursement_wrapper:
+      description: Response details
+      properties:
+         disbursement:
+            $ref: '#/definitions/Disbursement'
+   Disbursements_wrapper:
+      description: Response details
+      properties:
+         disbursements:
+            $ref: '#/definitions/Disbursements'
